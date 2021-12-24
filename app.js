@@ -12,7 +12,10 @@ const userWallet = document.getElementById("userWallet");
 const balance = document.getElementById('balance');
 const amount = document.getElementById('amount');
 const send = document.getElementById('send');
+const statusE = document.getElementById('statusE');
+const progress = document.getElementById('progress')
 
+let accounts = [];
 
 const emreAbiAddress = "0x7E84ABC4eBE676681c7f077FcFF36487fa79ebD7";
 
@@ -31,11 +34,10 @@ function toggleButton() {
   loginbutton.addEventListener("click", loginWithMetaMask);
   showBalance.addEventListener('click', showBalanceMetaMask);
   send.addEventListener('click', sendMetaMask);
-
 }
 
 async function loginWithMetaMask() {
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
+  accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
     .catch((e) => {
       console.error(e.message);
       return;
@@ -65,7 +67,7 @@ function signOutOfMetaMask() {
 }
 
 async function showBalanceMetaMask() {
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
+  accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
     .catch((e) => {
       console.error(e.message);
       return;
@@ -82,22 +84,47 @@ async function showBalanceMetaMask() {
   );
 }
 
+
 function sendMetaMask() {
   const amount = document.getElementById('amount').value
   const value = web3.utils.toWei(amount, 'ether');
 
-  console.log(value);
+  statusE.innerText = '';
+  progress.innerText = '';
+  
 
+  console.log(value);
 
   if (amount > balance) return console.error('not enough balance');
 
-  web3.eth.sendTransaction({
-    from: userWallet.toLowerCase(),
+  ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [{
+    from: accounts[0].toLowerCase(),
     to: emreAbiAddress.toLowerCase(),
-    value,
+    value: "0x" + (amount * 10 ** 18).toString(16),
+    },]
   })
+    .on('transactionHash', (hash) => {
+   statusE.innerText = 'on transactionHash' + hash;
+    
+    })
+    .on('receipt', receipt => {
+        console.log(receipt);
+    })
+    .on('confirmation', (confirmationNumber,) => {
+    console.log('on confirmation', confirmationNumber, receipt);
+    if(web3.eth.transactionConfirmationBlocks - confirmationNumber === 0 ){
+        statusE.innerText =  'perfect';
+    }
 
+    progress.innerText = `${transactionConfirmationBlocks}/${confirmationNumber}`;
+    })
+    .on('error', err, receipt =>{
+        console.log(receipt);
+    }); 
 }
+
 
 window.addEventListener("DOMContentLoaded", () => {
   toggleButton();
