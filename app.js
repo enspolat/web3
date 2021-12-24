@@ -10,8 +10,11 @@ const showBalance = document.getElementById("showBalance");
 const loginbutton = document.getElementById("loginButton");
 const userWallet = document.getElementById("userWallet");
 const balance = document.getElementById('balance');
-const miktar = document.getElementById('miktar');
+const amount = document.getElementById('amount');
 const send = document.getElementById('send');
+
+
+const emreAbiAddress = "0x7E84ABC4eBE676681c7f077FcFF36487fa79ebD7";
 
 
 function toggleButton() {
@@ -32,8 +35,7 @@ function toggleButton() {
 }
 
 async function loginWithMetaMask() {
-  const accounts = await window.ethereum
-    .request({ method: "eth_requestAccounts" })
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
     .catch((e) => {
       console.error(e.message);
       return;
@@ -43,11 +45,11 @@ async function loginWithMetaMask() {
   }
   window.userWalletAddress = accounts[0];
   userWallet.innerText = window.userWalletAddress;
-  loginButton.innerText = "Sign out of MetaMask";
+  loginbutton.innerText = "Sign out of MetaMask";
 
-  loginButton.removeEventListener("click", loginWithMetaMask);
+  loginbutton.removeEventListener("click", loginWithMetaMask);
   setTimeout(() => {
-    loginButton.addEventListener("click", signOutOfMetaMask);
+    loginbutton.addEventListener("click", signOutOfMetaMask);
   }, 200);
 }
 
@@ -62,20 +64,38 @@ function signOutOfMetaMask() {
   }, 200);
 }
 
-async function showBalanceMetaMask(){
-   web3.eth.getBalance(
-   accounts,
-  function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      balance.innerHTML = (web3.utils.fromWei(result, "ether") + " ETH");
+async function showBalanceMetaMask() {
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
+    .catch((e) => {
+      console.error(e.message);
+      return;
+    });
+  web3.eth.getBalance(
+    accounts[0],
+    function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        balance.innerHTML = (web3.utils.fromWei(result, "ether") + " ETH");
+      }
     }
-  }
-); 
+  );
 }
 
-function sendMetaMask(){
+function sendMetaMask() {
+  const amount = document.getElementById('amount').value
+  const value = web3.utils.toWei(amount, 'ether');
+
+  console.log(value);
+
+
+  if (amount > balance) return console.error('not enough balance');
+
+  web3.eth.sendTransaction({
+    from: userWallet.toLowerCase(),
+    to: emreAbiAddress.toLowerCase(),
+    value,
+  })
 
 }
 

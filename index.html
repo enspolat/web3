@@ -1,35 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <title>Document</title>
-  </head>
-  <body class="flex w-screen h-screen justify-center items-center">
-    <div class="flex-col space-y-2 justify-center items-center">
-      <button id="loginButton" class="rounded-md bg-purple-500 p-2 text-white">
-        login with MetaMask
-      </button>
-      <button id="showBalance" class="rounded-md bg-purple-500 p-2 text-white">
-        Show balance
-      </button>
-      <p id="userWallet" class="text-2xl text-gray-800 my-2"></p>
-      <p id="balance" class="text-2xl text-gray-800 my-2"></p>
-      <input
-        id="miktar"
-        type="text"
-        placeholder="miktari giriniz"
-        class="border-2"
-      />
-      <button id="send" class="text-2xl text-gray-800 my-2">send</button>
-    </div>
 
-    <script src="app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+  <div class="flex-col space-y-2 justify-center items-center">
+    <button id="loginButton" class="rounded-md bg-purple-500 p-2 text-white">
+      login with MetaMask
+    </button>
+    <button id="showBalance" class="rounded-md bg-purple-500 p-2 text-white">
+      Show balance
+    </button>
+    <p id="userWallet" class="text-2xl text-gray-800 my-2"></p>
+    <p id="balance" class="text-2xl text-gray-800 my-2"></p>
+    <input id="amount" type="text" placeholder="miktari giriniz" class="border-2" />
+    <button id="send" class="text-2xl text-gray-800 my-2">send</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
 </html>
